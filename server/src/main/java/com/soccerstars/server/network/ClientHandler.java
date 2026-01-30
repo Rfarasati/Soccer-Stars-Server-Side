@@ -16,10 +16,6 @@ import java.net.Socket;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Handles communication with a single client.
- * Each client connection runs in its own thread.
- */
 public class ClientHandler implements Runnable {
     private final Socket socket;
     private final DatabaseService database;
@@ -64,9 +60,6 @@ public class ClientHandler implements Runnable {
         writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
     }
 
-    /**
-     * Process an incoming JSON message.
-     */
     private void processMessage(String json) {
         try {
             MessageType type = Message.parseType(json);
@@ -90,7 +83,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // ==================== Message Handlers ====================
+    // Message Handlers
 
     private void handlePing() {
         send(new PongMessage("Welcome to Soccer Stars Server!"));
@@ -364,27 +357,16 @@ public class ClientHandler implements Runnable {
         broadcastUserStatusUpdate(game.getPlayer2Username(), "free");
     }
 
-    // ==================== Helper Methods ====================
-
-    /**
-     * Send a message to this client.
-     */
     public void send(Message message) {
         if (writer != null) {
             writer.println(message.toJson());
         }
     }
 
-    /**
-     * Send an error message.
-     */
     private void sendError(String code, String message) {
         send(new ErrorMessage(code, message));
     }
 
-    /**
-     * Broadcast user status update to all other online users.
-     */
     private void broadcastUserStatusUpdate(String username, String status) {
         UserStatusUpdate update = new UserStatusUpdate(username, status);
         for (UserSession session : sessionManager.getOnlineUsers()) {
@@ -397,16 +379,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Get client IP address.
-     */
     private String getClientIp() {
         return socket.getInetAddress().getHostAddress();
     }
 
-    /**
-     * Stop this handler.
-     */
     public void stop() {
         running = false;
         try {
@@ -416,9 +392,6 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Cleanup on disconnect.
-     */
     private void cleanup() {
         System.out.println("[ClientHandler] Client disconnected: " +
                 (currentUsername != null ? currentUsername : getClientIp()));

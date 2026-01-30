@@ -1,9 +1,5 @@
 package com.soccerstars.server.protocol;
 
-/**
- * Defines all message types for client-server communication.
- * Messages are sent as JSON with a "type" field indicating the message type.
- */
 public enum MessageType {
     // Connection
     PING,                    // Client -> Server: Connection test

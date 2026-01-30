@@ -1,21 +1,18 @@
 package com.soccerstars.server.model;
 
-/**
- * Represents an active user session (logged-in user).
- */
 public class UserSession {
 
     public enum Status {
-        FREE,       // Online and available for games
-        IN_GAME,    // Currently playing a game
-        BUSY        // In matchmaking / waiting for response
+        FREE,
+        IN_GAME,
+        BUSY
     }
 
-    private String sessionId;
-    private String username;
+    private final String sessionId;
+    private final String username;
     private Status status;
-    private String ipAddress;
-    private long loginTime;
+    private final String ipAddress;
+    private final long loginTime;
     private long lastActivityTime;
 
     public UserSession(String sessionId, String username, String ipAddress) {
@@ -27,7 +24,6 @@ public class UserSession {
         this.lastActivityTime = System.currentTimeMillis();
     }
 
-    // Getters and Setters
     public String getSessionId() { return sessionId; }
 
     public String getUsername() { return username; }

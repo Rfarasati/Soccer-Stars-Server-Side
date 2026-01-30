@@ -7,10 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Base64;
 
-/**
- * Handles all database operations for user management.
- * Uses SQLite for simplicity.
- */
 public class DatabaseService {
     private static final String DB_URL = "jdbc:sqlite:soccerstars.db";
     private Connection connection;
@@ -19,9 +15,6 @@ public class DatabaseService {
         initializeDatabase();
     }
 
-    /**
-     * Initialize database connection and create tables if they don't exist.
-     */
     private void initializeDatabase() {
         try {
             connection = DriverManager.getConnection(DB_URL);
@@ -65,10 +58,6 @@ public class DatabaseService {
         }
     }
 
-    /**
-     * Register a new user.
-     * @return true if successful, false if username/email already exists
-     */
     public synchronized boolean registerUser(String username, String email, String password) {
         String sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
 
@@ -89,10 +78,6 @@ public class DatabaseService {
         }
     }
 
-    /**
-     * Validate user credentials for login.
-     * @return User object if valid, null otherwise
-     */
     public synchronized User validateLogin(String username, String password) {
         String sql = "SELECT * FROM users WHERE username = ? AND password_hash = ?";
 
@@ -116,9 +101,6 @@ public class DatabaseService {
         return null;
     }
 
-    /**
-     * Check if username already exists.
-     */
     public synchronized boolean usernameExists(String username) {
         String sql = "SELECT 1 FROM users WHERE username = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -130,9 +112,6 @@ public class DatabaseService {
         }
     }
 
-    /**
-     * Check if email already exists.
-     */
     public synchronized boolean emailExists(String email) {
         String sql = "SELECT 1 FROM users WHERE email = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -144,9 +123,6 @@ public class DatabaseService {
         }
     }
 
-    /**
-     * Record a completed game.
-     */
     public synchronized void recordGameResult(String gameSessionId, String player1, String player2,
                                               String winner, int player1Score, int player2Score) {
         String insertGame = """
@@ -190,10 +166,6 @@ public class DatabaseService {
         }
     }
 
-    /**
-     * Simple password hashing using SHA-256.
-     * In production, use BCrypt or similar.
-     */
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -204,9 +176,6 @@ public class DatabaseService {
         }
     }
 
-    /**
-     * Close database connection.
-     */
     public void close() {
         try {
             if (connection != null && !connection.isClosed()) {

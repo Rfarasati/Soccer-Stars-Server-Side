@@ -1,8 +1,5 @@
 package com.soccerstars.server.model;
 
-/**
- * Represents a registered user in the system.
- */
 public class User {
     private int id;
     private String username;
@@ -13,15 +10,6 @@ public class User {
 
     public User() {}
 
-    public User(String username, String email, String passwordHash) {
-        this.username = username;
-        this.email = email;
-        this.passwordHash = passwordHash;
-        this.gamesPlayed = 0;
-        this.gamesWon = 0;
-    }
-
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

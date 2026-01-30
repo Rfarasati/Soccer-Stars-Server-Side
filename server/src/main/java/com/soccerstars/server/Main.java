@@ -2,12 +2,6 @@ package com.soccerstars.server;
 
 import com.soccerstars.server.network.GameServer;
 
-/**
- * Main entry point for the Soccer Stars server.
- *
- * Usage: java -jar soccer-stars-server.jar [port]
- * Default port: 5000
- */
 public class Main {
     private static final int DEFAULT_PORT = 5001;
 

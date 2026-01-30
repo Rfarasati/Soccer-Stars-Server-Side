@@ -13,10 +13,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Main TCP server that accepts client connections.
- * Handles multiple clients using a thread pool.
- */
 public class GameServer {
     private final int port;
     private final DatabaseService database;
@@ -37,9 +33,6 @@ public class GameServer {
         this.activeHandlers = new ArrayList<>();
     }
 
-    /**
-     * Start the server and begin accepting connections.
-     */
     public void start() {
         try {
             serverSocket = new ServerSocket(port);
@@ -76,9 +69,6 @@ public class GameServer {
         }
     }
 
-    /**
-     * Handle a new client connection.
-     */
     private void handleNewConnection(Socket socket) {
         ClientHandler handler = new ClientHandler(socket, database, sessionManager, this);
         synchronized (activeHandlers) {
@@ -88,27 +78,18 @@ public class GameServer {
         System.out.println("[Server] New connection from " + socket.getInetAddress().getHostAddress());
     }
 
-    /**
-     * Start periodic cleanup of expired invitations.
-     */
     private void startCleanupTask() {
         scheduler.scheduleAtFixedRate(() -> {
             sessionManager.cleanupExpiredInvitations();
         }, 30, 30, TimeUnit.SECONDS);
     }
 
-    /**
-     * Log server stats periodically.
-     */
     private void startStatsLogging() {
         scheduler.scheduleAtFixedRate(() -> {
             System.out.println("[Server Stats] " + sessionManager.getStats());
         }, 60, 60, TimeUnit.SECONDS);
     }
 
-    /**
-     * Stop the server gracefully.
-     */
     public void stop() {
         running = false;
         System.out.println("[Server] Shutting down...");
@@ -147,24 +128,4 @@ public class GameServer {
         System.out.println("[Server] Shutdown complete");
     }
 
-    /**
-     * Get the session manager.
-     */
-    public SessionManager getSessionManager() {
-        return sessionManager;
-    }
-
-    /**
-     * Get the database service.
-     */
-    public DatabaseService getDatabase() {
-        return database;
-    }
-
-    /**
-     * Check if server is running.
-     */
-    public boolean isRunning() {
-        return running;
-    }
 }

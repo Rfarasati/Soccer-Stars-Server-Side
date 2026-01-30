@@ -9,10 +9,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-/**
- * Manages active user sessions, game invitations, and active games.
- * Thread-safe implementation for concurrent access.
- */
 public class SessionManager {
     // Maps sessionId -> UserSession
     private final Map<String, UserSession> sessions = new ConcurrentHashMap<>();
@@ -29,9 +25,6 @@ public class SessionManager {
     // Maps gameSessionId -> GameSession
     private final Map<String, GameSession> activeGames = new ConcurrentHashMap<>();
 
-    /**
-     * Create a new session for a logged-in user.
-     */
     public UserSession createSession(String username, String ipAddress, ClientHandler handler) {
         // Check if user already has an active session
         if (usernameToSession.containsKey(username)) {
@@ -50,9 +43,6 @@ public class SessionManager {
         return session;
     }
 
-    /**
-     * Remove a session (logout or disconnect).
-     */
     public void removeSession(String sessionId) {
         UserSession session = sessions.remove(sessionId);
         if (session != null) {
@@ -62,9 +52,6 @@ public class SessionManager {
         }
     }
 
-    /**
-     * Remove session by username.
-     */
     public void removeSessionByUsername(String username) {
         String sessionId = usernameToSession.get(username);
         if (sessionId != null) {
@@ -72,53 +59,32 @@ public class SessionManager {
         }
     }
 
-    /**
-     * Get session by session ID.
-     */
     public UserSession getSession(String sessionId) {
         return sessions.get(sessionId);
     }
 
-    /**
-     * Get session by username.
-     */
     public UserSession getSessionByUsername(String username) {
         String sessionId = usernameToSession.get(username);
         return sessionId != null ? sessions.get(sessionId) : null;
     }
 
-    /**
-     * Get client handler for a session.
-     */
     public ClientHandler getHandler(String sessionId) {
         return sessionHandlers.get(sessionId);
     }
 
-    /**
-     * Get client handler by username.
-     */
     public ClientHandler getHandlerByUsername(String username) {
         String sessionId = usernameToSession.get(username);
         return sessionId != null ? sessionHandlers.get(sessionId) : null;
     }
 
-    /**
-     * Validate if session ID is valid and active.
-     */
     public boolean isValidSession(String sessionId) {
         return sessions.containsKey(sessionId);
     }
 
-    /**
-     * Check if user is online.
-     */
     public boolean isUserOnline(String username) {
         return usernameToSession.containsKey(username);
     }
 
-    /**
-     * Update user status.
-     */
     public void updateUserStatus(String username, UserSession.Status status) {
         UserSession session = getSessionByUsername(username);
         if (session != null) {
@@ -127,27 +93,18 @@ public class SessionManager {
         }
     }
 
-    /**
-     * Get list of all online users with their status.
-     */
     public List<UserSession> getOnlineUsers() {
         return new ArrayList<>(sessions.values());
     }
 
-    /**
-     * Get list of online users excluding a specific user.
-     */
     public List<UserSession> getOnlineUsersExcept(String excludeUsername) {
         return sessions.values().stream()
                 .filter(s -> !s.getUsername().equals(excludeUsername))
                 .collect(Collectors.toList());
     }
 
-    // ==================== Game Invitation Management ====================
+    // Game Invitation Management
 
-    /**
-     * Create a new game invitation.
-     */
     public GameInvitation createInvitation(String fromUsername, String toUsername,
                                            String fromIpAddress, int fromUdpPort) {
         String inviteId = generateInviteId();
@@ -159,32 +116,20 @@ public class SessionManager {
         return invitation;
     }
 
-    /**
-     * Get pending invitation by ID.
-     */
     public GameInvitation getInvitation(String inviteId) {
         return pendingInvitations.get(inviteId);
     }
 
-    /**
-     * Remove an invitation.
-     */
     public void removeInvitation(String inviteId) {
         pendingInvitations.remove(inviteId);
     }
 
-    /**
-     * Clean up expired invitations.
-     */
     public void cleanupExpiredInvitations() {
         pendingInvitations.entrySet().removeIf(entry -> entry.getValue().isExpired());
     }
 
-    // ==================== Game Session Management ====================
+    // Game Session Management
 
-    /**
-     * Create a new game session.
-     */
     public GameSession createGameSession(String player1Username, String player2Username) {
         String gameSessionId = generateGameSessionId();
         GameSession game = new GameSession(gameSessionId, player1Username, player2Username);
@@ -198,16 +143,10 @@ public class SessionManager {
         return game;
     }
 
-    /**
-     * Get active game session.
-     */
     public GameSession getGameSession(String gameSessionId) {
         return activeGames.get(gameSessionId);
     }
 
-    /**
-     * End a game session and set players back to free.
-     */
     public void endGameSession(String gameSessionId) {
         GameSession game = activeGames.remove(gameSessionId);
         if (game != null) {
@@ -217,7 +156,7 @@ public class SessionManager {
         }
     }
 
-    // ==================== ID Generation ====================
+    // ID Generation
 
     private String generateSessionId() {
         return "sess_" + UUID.randomUUID().toString().substring(0, 8);
@@ -231,9 +170,6 @@ public class SessionManager {
         return "game_" + UUID.randomUUID().toString().substring(0, 8);
     }
 
-    /**
-     * Get statistics about current state.
-     */
     public String getStats() {
         return String.format("Sessions: %d, Invitations: %d, Active Games: %d",
                 sessions.size(), pendingInvitations.size(), activeGames.size());

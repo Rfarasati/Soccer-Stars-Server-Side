@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Messages {
 
-    // ==================== Connection Messages ====================
+    // Connection Messages
 
     public static class PingMessage extends Message {
         public PingMessage() {
@@ -33,7 +33,7 @@ public class Messages {
         public long getServerTime() { return serverTime; }
     }
 
-    // ==================== Authentication Messages ====================
+    // Authentication Messages
 
     public static class RegisterRequest extends Message {
         private String username;
@@ -146,7 +146,7 @@ public class Messages {
         public boolean isSuccess() { return success; }
     }
 
-    // ==================== Lobby Messages ====================
+    // Lobby Messages
 
     public static class GetOnlineUsersRequest extends Message {
         private String sessionId;
@@ -211,7 +211,7 @@ public class Messages {
         public String getStatus() { return status; }
     }
 
-    // ==================== Matchmaking Messages ====================
+    // Matchmaking Messages
 
     public static class GameInvite extends Message {
         private String sessionId;
@@ -316,7 +316,7 @@ public class Messages {
         public String getReason() { return reason; }
     }
 
-    // ==================== Game Result Messages ====================
+    //  Game Result Messages
 
     public static class GameResultMessage extends Message {
         private String sessionId;
@@ -361,7 +361,7 @@ public class Messages {
         public boolean isSuccess() { return success; }
     }
 
-    // ==================== Error Messages ====================
+    // Error Messages
 
     public static class ErrorMessage extends Message {
         private String errorCode;

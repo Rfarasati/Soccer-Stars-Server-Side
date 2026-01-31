@@ -38,9 +38,9 @@ public class GameServer {
             serverSocket = new ServerSocket(port);
             running = true;
 
-            System.out.println("         SOCCER STARS SERVER STARTED                ");
-            System.out.println("  Port: " + port);
-            System.out.println("  Status: Running                                   ");
+            System.out.println("SOCCER STARS SERVER STARTED");
+            System.out.println("Port: " + port);
+            System.out.println("Status: Running");
 
             // Start periodic cleanup task
             startCleanupTask();

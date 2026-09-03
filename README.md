@@ -56,11 +56,3 @@ shared/src/main/java/com/soccerstars/shared/
                                               plus P2PMessages/P2PMessageType for the P2P
                                               gameplay protocol
 ```
-
-## Known limitations
-
-- The `shared` Maven module isn't actually wired as a dependency of `server` — the server
-  has its own local copy of the protocol classes under `server/.../protocol/`, so `shared`
-  is effectively dead code left over from an earlier structure (probably intended for a
-  Java client at some point; the actual client is Python and defines its own message
-  builders independently).

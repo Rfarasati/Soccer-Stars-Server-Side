@@ -8,6 +8,15 @@ peer-to-peer between clients (see
 [Soccer-Stars-Client-Side](https://github.com/Rfarasati/Soccer-Stars-Client-Side)) once a
 match is set up.
 
+## In action
+
+![Gameplay](docs/gameplay.png)
+
+A match served by this server: two clients (`negar`, `reza`) matched through the lobby,
+handed each other's P2P address via `GAME_START`, and are playing live. Full UI walkthrough
+(lobby, invitation) is in the
+[client repo](https://github.com/Rfarasati/Soccer-Stars-Client-Side#screenshots).
+
 ## Responsibilities
 
 - **Accounts** (`DatabaseService`, SQLite): registration and login, with password hashes

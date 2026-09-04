@@ -1,6 +1,6 @@
 # Soccer Stars — Server
 
-> **Course project** — Computer Networks, Ferdowsi University of Mashhad, Fall 2025 (Final)
+> **Course project** — Computer Networks, Ferdowsi University of Mashhad, Fall 2025 (5th semester - Final)
 
 The matchmaking/lobby server for **Soccer Stars**, a real-time online 2-player game. The
 server handles accounts, presence, and matchmaking over TCP; actual gameplay happens
